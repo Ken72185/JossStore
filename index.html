@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Josstore — PES 2017 Patch 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #b10000;
+      --bg: #0b0b0b;
+      --card: #121212;
+      --muted: #bdbdbd;
+      --transition: 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', system-ui, Arial;
+      transition: all var(--transition);
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #fff;
+    }
+
+    header {
+      background: var(--accent);
+      padding: 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-wrap {
+      text-align: center;
+      padding: 24px 0 10px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .profile-pic {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    }
+
+    main.container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 16px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    /* Produk Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+      transform: scale(1);
+      animation: fadeIn 0.7s ease-out;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(177, 0, 0, 0.5);
+    }
+
+    .product-img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .product-body {
+      padding: 14px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-body h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .price {
+      font-weight: 700;
+      margin: 10px 0;
+      color: #ffd6d6;
+      font-size: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      background: #d50000;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Cart */
+    .cart-area {
+      margin-top: 28px;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeInUp 0.7s ease-out;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .qty-btn, .remove-btn {
+      background: #222;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .qty-btn:hover { background: #333; }
+    .remove-btn { background: #8b0000; }
+    .remove-btn:hover { background: #b30000; }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 14px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* QRIS overlay */
+    #qrisOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    #qrisCard {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      animation: scaleIn 0.5s ease-out;
+    }
+
+    #qrisCard img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    .close-qris, .wa-send {
+      margin-top: 12px;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+    }
+
+    .close-qris { background: var(--accent); color: #fff; }
+    .close-qris:hover { background: #d50000; }
+
+    .wa-send { background: #25D366; color: #fff; }
+    .wa-send:hover { background: #1EBE5D; }
+
+    /* RESPONSIVE FIX */
+    @media (max-width: 768px) {
+      header .brand {
+        font-size: 18px;
+      }
+      .product-body h3 {
+        font-size: 15px;
+      }
+      .product-img {
+        aspect-ratio: 4 / 3;
+      }
+      .cart-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .total-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">Josstore — PES 2017 Patch 2025</div>
+  </header>
+
+  <div class="profile-wrap">
+    <img class="profile-pic" src="logo.jpg" alt="Profil">
+  </div>
+
+  <main class="container">
+    <section>
+      <h2>Daftar Produk</h2>
+      <div class="product-grid">
+
+        <!-- Produk -->
+        <article class="product-card">
+          <img class="product-img" src="pc.jpg" alt="PES PC">
+          <div class="product-body">
+            <h3>PES 2017 Patch 2025 (PC)</h3>
+            <div class="muted">Minimum: Windows 10/8/7, Core2Duo 1.8GHz, RAM 4GB, GPU 1GB. Rekomendasi: Core i3 / Phenom X4, RAM 8GB, GPU GTX 260 / HD4850 atau lebih.</div>
+            <div class="price">Rp 30.000</div>
+            <button class="btn" onclick="addToCart('PES 2017 Patch 2025 (PC)',30000)">Tambah ke Keranjang</button>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <img class="product-img" src="hp.jpg" alt="PES HP">
+          <div class="product-body">
+            <h3>PES 2017 Patch 2025 (HP)</h3>
+            <div class="muted">Minimum: Snapdragon 865 / RAM 8GB. ✅ Garansi uang kembali jika tidak cocok.</div>
+            <div class="price">Rp 30.000</div>
+            <button class="btn" onclick="addToCart('PES 2017 Patch 2025 (HP)',30000)">Tambah ke Keranjang</button>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <img class="product-img" src="IMG-20251025-WA0023.jpg" alt="PES HP/PC">
+          <div class="product-body">
+            <h3>PES 2013 Patch 2025 (HP/PC)</h3>
+            <div class="muted">Cocok untuk Mediatek Helio G99 / Snapdragon 665 / Dimensity 7300 (RAM 8GB).</div>
+            <div class="price">Rp 30.000</div>
+            <button class="btn" onclick="addToCart('PES 2013 Patch 2025 (HP/PC)',30000)">Tambah ke Keranjang</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <aside class="cart-area" id="cartCard">
+      <h2>Keranjang</h2>
+      <div id="cartList"><div class="muted">Keranjang kosong</div></div>
+      <div class="total-row">
+        <div>Total:</div>
+        <div id="totalPrice">Rp 0</div>
+      </div>
+      <button class="btn" id="checkoutBtn" onclick="openQris()" disabled>Checkout — Lihat Pembayaran</button>
+    </aside>
+  </main>
+
+  <div id="qrisOverlay" style="display:none;flex-direction:column;">
+    <div id="qrisCard">
+      <img id="qrisImg" src="quality_restoration_20251027143800094.jpg" alt="QRIS">
+      <button class="close-qris" onclick="closeQris()">Tutup</button>
+      <button class="wa-send" id="waSendBtn">Kirim Bukti Pembayaran via WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const WA_NUMBER = '6289608165890';
+      let cart = [];
+
+      function formatIDR(n){ return 'Rp ' + n.toLocaleString('id-ID'); }
+
+      window.addToCart = (name, price) => {
+        const found = cart.find(i=>i.name===name);
+        if(found){ found.qty += 1; }
+        else{ cart.push({name, price, qty:1}); }
+        renderCart();
+      }
+
+      function renderCart(){
+        const listEl = document.getElementById('cartList');
+        const totalEl = document.getElementById('totalPrice');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        if(cart.length === 0){
+          listEl.innerHTML = '<div class="muted">Keranjang kosong</div>';
+          totalEl.textContent = formatIDR(0);
+          checkoutBtn.disabled = true;
+          return;
+        }
+
+        let html = '';
+        let total = 0;
+        cart.forEach((it, idx)=>{
+          total += it.price * it.qty;
+          html += `
+            <div class="cart-row">
+              <div>
+                <div style="font-weight:600">${it.name}</div>
+                <div class="muted">Rp ${it.price.toLocaleString('id-ID')} × ${it.qty}</div>
+              </div>
+              <div style="text-align:right">
+                <div>${formatIDR(it.price * it.qty)}</div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap">
+                  <button class="qty-btn" onclick="changeQty(${idx}, -1)">-</button>
+                  <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+                  <button class="remove-btn" onclick="removeItem(${idx})">Hapus</button>
+                </div>
+              </div>
+            </div>`;
+        });
+
+        listEl.innerHTML = html;
+        totalEl.textContent = formatIDR(total);
+        checkoutBtn.disabled = false;
+      }
+
+      window.changeQty = (idx, delta) => {
+        const item = cart[idx];
+        if(!item) return;
+        item.qty += delta;
+        if(item.qty <= 0) cart.splice(idx,1);
+        renderCart();
+      }
+
+      window.removeItem = (idx) => {
+        cart.splice(idx,1);
+        renderCart();
+      }
+
+      const qrisOverlay = document.getElementById('qrisOverlay');
+      const waSendBtn = document.getElementById('waSendBtn');
+
+      window.openQris = () => {
+        if(cart.length === 0){ alert('Keranjang kosong!'); return; }
+        qrisOverlay.style.display = 'flex';
+      }
+
+      window.closeQris = () => { qrisOverlay.style.display = 'none'; }
+
+      waSendBtn.addEventListener('click', ()=>{
+        if(cart.length === 0){ alert('Keranjang kosong!'); return; }
+        let lines = [];
+        lines.push('Halo bang, saya sudah bayar. Ini detail pesanan saya:\n');
+        let total = 0;
+        cart.forEach(it=>{
+          lines.push(`Nama Barang: ${it.name}`);
+          lines.push(`Qty: ${it.qty}`);
+          lines.push(`Harga: Rp ${(it.price * it.qty).toLocaleString('id-ID')}`);
+          lines.push('');
+          total += it.price * it.qty;
+        });
+        lines.push(`Total: Rp ${total.toLocaleString('id-ID')}`);
+        lines.push('\nBukti transfer saya kirim menyusul.');
+        const message = lines.join('\n');
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+      });
+
+      renderCart();
+    });
+  </script>
+</body>
+  </html>
+  
